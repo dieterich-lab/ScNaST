@@ -1,0 +1,13 @@
+{
+    "__default__":
+    {
+        "account": "eboileau",
+        "mem": "25G",
+        "time": "24:0:0",
+        "threads": "32",
+        "partition" : "general"
+    }
+}
+
+
+

@@ -1,0 +1,144 @@
+# -*- coding: utf-8
+
+"""
+Snakemake workflow for transcriptome assembly using Stringtie2
+"""
+
+SAMPLES = config['samples'].keys()
+STRG_BASE = config['strg_base']
+IDX_BASE = config['idx_base']
+IDX_NAME = config['idx_name']
+
+USE_GUIDE = 'FALSE'
+if config["use_guide"] is True:
+    USE_GUIDE = 'TRUE'
+    
+    
+def get_input_bams(wildcards):
+    return config["samples"][wildcards.sample]
+
+
+# stringtie2 - stringtie2 merge - gffcompare
+rule strg:
+    input:
+        expand("{strg_base}/{sample}/{sample}.gtf", strg_base=STRG_BASE, sample=SAMPLES),
+        expand("{strg_base}/strg_merged.gtf", strg_base=STRG_BASE),
+        expand("{strg_base}/gffcompare/gffcmp.annotated.gtf", strg_base=STRG_BASE)
+        
+
+# rule strg + transcriptome fasta and minimap2 index creation
+rule all:
+    input:
+        expand("{strg_base}/{sample}/{sample}.gtf", strg_base=STRG_BASE, sample=SAMPLES),
+        expand("{strg_base}/strg_merged.gtf", strg_base=STRG_BASE),
+        expand("{strg_base}/gffcompare/gffcmp.annotated.gtf", strg_base=STRG_BASE),
+        expand("{strg_base}/gffcompare/gffcmp.multi_exons.annotated.gtf", strg_base=STRG_BASE),
+        expand("{idx_base}/{idx_name}.fa", idx_base=IDX_BASE, idx_name=IDX_NAME),
+        expand("{idx_base}/{idx_name}.mmi", idx_base=IDX_BASE, idx_name=IDX_NAME)
+        
+        
+rule stringtie:
+    input:
+        bam = get_input_bams
+    output:
+        gtf = "{strg_base}/{sample}/{sample}.gtf"
+    params:
+        guide = USE_GUIDE,
+        annotation = config['gtf'],
+        opts = config["strg_opts"]
+    envmodules:
+        "stringtie/2.1.5"
+    threads: 32
+    shell:
+        """
+        G_FLAG=""
+        if [[ {params.guide} == "TRUE" ]];
+        then
+         G_FLAG="-G {params.annotation}"
+        fi
+        stringtie -L $G_FLAG -p {threads} {params.opts} -o {output.gtf} {input.bam}
+        """
+
+
+rule stringtie_merge:
+    input:
+        gtfs = expand("{strg_base}/{sample}/{sample}.gtf", strg_base=STRG_BASE, sample=SAMPLES)
+    output:
+        gtf = "{strg_base}/strg_merged.gtf"
+    params:
+        guide = USE_GUIDE,
+        annotation = config['gtf'],
+        opts = config["strg_merge_opts"]
+    envmodules:
+        "stringtie/2.1.5"
+    threads: 32
+    shell:
+        """
+        G_FLAG=""
+        if [[ {params.guide} == "TRUE" ]];
+        then
+         G_FLAG="-G {params.annotation}"
+        fi
+        stringtie --merge $G_FLAG -p {threads} {params.opts} -o {output.gtf} {input.gtfs}
+        """
+        
+
+# here, we use the stringtie2 merge as input
+rule gffcompare:
+    input:
+        merged_gtf = "{strg_base}/strg_merged.gtf"
+    output:
+        annotated_gtf = "{strg_base}/gffcompare/gffcmp.annotated.gtf"
+    params:
+        directory = directory("{strg_base}/gffcompare/gffcmp"),
+        annotation = config['gtf'],
+        opts = config["gffcmp_opts"]
+    envmodules:
+        "gffcompare/0.12.2"
+    shell:
+        """
+        if [[ -f {params.annotation} ]];
+        then 
+         gffcompare -r {params.annotation} {params.opts} -o {params.directory} {input.merged_gtf}
+        fi
+        """
+
+
+rule rm_single_exon_trx:
+    input:
+        gtf = expand("{strg_base}/gffcompare/gffcmp.annotated.gtf", strg_base=STRG_BASE)
+    output:
+        gtf = "{strg_base}/gffcompare/gffcmp.multi_exons.annotated.gtf",
+    shell:
+          """
+          awk '$7!="."' {input.gtf} > {output.gtf}
+          """
+          
+          
+rule gffread:
+    input:
+        genome = config['fasta'],
+        gtf = expand("{strg_base}/gffcompare/gffcmp.multi_exons.annotated.gtf", strg_base=STRG_BASE)
+    output:
+        fa = "{idx_base}/{idx_name}.fa"
+    envmodules:
+        "gffread/0.12.6"
+    shell:
+          """
+          gffread -w {output.fa} -g {input.genome} {input.gtf}
+          """
+
+
+rule build_minimap_index:
+    input:
+        fa = "{idx_base}/{idx_name}.fa"
+    output:
+        mmi = "{idx_base}/{idx_name}.mmi"
+    params:
+        opts = config["minimap_idx_opts"]
+    threads: 32
+    shell:
+          """
+          minimap2 -t {threads} {params.opts} -d {output.mmi} {input.fa}
+          """
+

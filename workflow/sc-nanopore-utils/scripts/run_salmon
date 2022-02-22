@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Calling: salmon quant -p $6 $5 --ont -t $3 --geneMap $4 ..."
+
+for f in $1/*.toTranscriptome.sortedByName.bam
+ do  
+  filename=$(basename -- "$f")
+  filename="$2/${filename%%.*}"
+  salmon quant -p $6 $5 --ont -t $3 --geneMap $4 -a $f -o $filename
+ done
+
+ 
+
+ 
+ 

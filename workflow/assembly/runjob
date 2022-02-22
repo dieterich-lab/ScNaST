@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH -n 1
+#SBATCH -N 1
+#SBATCH -c 1
+#SBATCH --mem=25G
+#SBATCH --job-name="assembly"
+#SBATCH --mail-user=eboileau@uni-heidelberg.de
+
+# conda activate scNapBar
+# we use stringtie2, gffcompare, and gffread form the environment modules
+
+CLUSTER_CONFIG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/seurat_pipeline/workflow/assembly/cluster.json
+snakemake --configfile ../config.yaml -j 4 all --use-envmodules --printshellcmds --verbose --cluster-config $CLUSTER_CONFIG --cluster "sbatch -A {cluster.account} --mem={cluster.mem} -t {cluster.time} -c {cluster.threads} -p {cluster.partition}" # --dry-run
+

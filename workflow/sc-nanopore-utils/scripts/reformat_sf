@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for dir in $1/*/
+ do
+  d=$(basename $dir)
+  barcode="$(cut -d'_' -f1 <<< $d)"
+  sf="$dir/quant.sf"
+  cp $sf "$2/${barcode}.sf"
+  sed -i "s/NumReads/${barcode}/g" "$2/${barcode}.sf"
+ done
+ 
+cd $2
+files=(*)
+awk '{L[FNR]=L[FNR] $5 "\t"}END{for(i=1;i<=FNR;i++)print L[i]}' *.sf > "$2/combined.sf"
+# this generates a tab at the end of the last column...
+sed -i 's/[\t]\+$//' "$2/combined.sf"
+cut -d$'\t' -f1 "${files[0]}" | paste - "$2/combined.sf" > "$1/quant.sf"
+cd ..
+rm -r $2

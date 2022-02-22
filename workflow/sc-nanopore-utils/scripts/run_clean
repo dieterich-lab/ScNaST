@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# mapping
+cd $1
+ls -lh > files.txt
+rm *.bam
+rm *.bam.bai
+
+# raw
+cd $2
+ls -lh > files.txt
+rm *.fastq.gz
+
+# minimap
+cd $3
+ls -lh > files.txt
+rm *.bam

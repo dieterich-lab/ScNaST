@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Calling: minimap2 -t $5 $4 $2 | samtools sort - -n $6 -T $7 ..." 
+
+for f in $1/*.fastq.gz
+ do  
+  filename=$(basename -- "$f")
+  filename="$3/${filename%%.*}.toTranscriptome.sortedByName.bam"
+  minimap2 -t $5 $4 $2 $f | samtools sort - -n $6 -T $7 -o $filename
+ done
+ 

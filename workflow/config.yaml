@@ -5,12 +5,13 @@
 # results are written one directory up into a directory called "analysis"
 
 samples:
- #H61211a: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211a/results/VX06_H61211a_all_pass.bam
- #H61211b: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211b/results/VX06_H61211b_all_pass.bam
+ H61211a: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211a/results/VX06_H61211a_all_pass.bam
+ H61211b: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211b/results/VX06_H61211b_all_pass.bam
  H61211c: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211c/results/VX06_H61211c_all_pass.bam
  H61211d: /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211d/results/VX06_H61211d_all_pass.bam
  
-# --- assembly 
+ 
+# ------------- assembly 
 
 # genome
 fasta: /prj/Florian_Leuschner_spatial/analysis/Nanopore/mm10-2020-A_build/Mus_musculus.GRCm38.dna.primary_assembly.fa.modified
@@ -34,7 +35,8 @@ idx_name: Mus_musculus_GRCm38_transcripts
 # minimap2 transcriptome index
 minimap_idx_opts: "-k 14"
 
-# --- sc-nanopore-utils 
+
+# ------------- sc-nanopore-utils 
 
 # transcriptome sequences and minimap index are derived from the 
 # above using "strg_base", "idx_base", and "idx_name"
@@ -50,9 +52,29 @@ salmon_env: /biosw/salmon/1.5.2/bin/salmon
 salmon_opts: "-l A --fldMean 925 --fldMax 300000"
 
 
+# ------------- visiumtools
 
-# ** with conda activate scNapBar and salmon/1.5.2
-# ImportError: Unable to import required dependencies:
-# numpy: /biosw/salmon/1.5.2/lib/libm.so.6: symbol __get_cpu_features version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-# see https://github.com/COMBINE-lab/salmon/issues/710
+# NOTE: Only relevant for Visium Spatial Gene Expression!
+
+# path to CellRanger output (Illumina)
+# same as used for scNapBar
+
+samples_cellranger:
+ H61211a: /prj/Florian_Leuschner_spatial/Illumina/VX06_A006200151/cellranger/VX06_A1_149524/outs
+ H61211b: /prj/Florian_Leuschner_spatial/Illumina/VX06_A006200151/cellranger/VX06_B1_149525/outs
+ H61211c: /prj/Florian_Leuschner_spatial/Illumina/VX06_A006200151/cellranger/VX06_C1_149526/outs
+ H61211d: /prj/Florian_Leuschner_spatial/Illumina/VX06_A006200151/cellranger/VX06_D1_149527/outs
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
     

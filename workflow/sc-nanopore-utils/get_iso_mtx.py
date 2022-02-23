@@ -35,7 +35,8 @@ def main():
 
     parser.add_argument('config', help="""The config file (yaml).""")
     
-    parser.add_argument('-s', '--score', help="""Post hoc filtering of scNapBar scores""", type=int, default=None)
+    parser.add_argument('-s', '--score', help="""Post hoc filtering of scNapBar scores""", 
+                        type=int, default=None)
     
     parser.add_argument('--overwrite', help="""If this flag is present, existing files 
                         will be overwritten (limited, if directories exist or no, no files check).
@@ -47,7 +48,8 @@ def main():
                         not removed.""", action='store_true')
 
     parser.add_argument('-t', '--tmp', help="""Optional argument: where to write 
-        temporary files. If not specified, programs-specific tmp will be used.""", type=str, default=None)
+                        temporary files. If not specified, programs-specific tmp will be used.""", 
+                        type=str, default=None)
     
     utils.add_sbatch_options(parser, num_cpus=default_num_cpus, mem=default_mem)
     utils.add_logging_options(parser)
@@ -132,7 +134,8 @@ def main():
             msg = f"Skipping {raw_dir[sample]} as directory exists!"
             logger.info(msg)
             continue
-        cmd = f"{os.path.join(SCRIPTS_PATH, 'run_bam2fastq')} {mapping_dir[sample]} {raw_dir[sample]} {num_cpus}"
+        cmd = f"{os.path.join(SCRIPTS_PATH, 'run_bam2fastq')} {mapping_dir[sample]} {raw_dir[sample]} " \
+              f"{num_cpus}"
         try:
             job_id = [job_ids_split[sample]]
             job_id_bam2fastq = utils.check_sbatch(cmd, args=args, dependencies=job_id)
@@ -154,8 +157,8 @@ def main():
             msg = f"Skipping {minimap_dir[sample]} as directory exists!"
             logger.info(msg)
             continue
-        cmd = f"{os.path.join(SCRIPTS_PATH, 'run_minimap2')} {raw_dir[sample]} {minimap_index} {minimap_dir[sample]} " \
-              f"{minimap_opts} {args.num_cpus} {num_cpus} {args.tmp}"
+        cmd = f"{os.path.join(SCRIPTS_PATH, 'run_minimap2')} {raw_dir[sample]} {minimap_index} " \
+              f"{minimap_dir[sample]} {minimap_opts} {args.num_cpus} {num_cpus} {args.tmp}"
         try:
             job_id = [job_ids_bam2fastq[sample]]
             job_id_minimap = utils.check_sbatch(cmd, args=args, dependencies=job_id)
@@ -167,7 +170,8 @@ def main():
     # salmon
     if config['salmon_env']:
         if shutil.which('salmon') != config['salmon_env']:
-            msg = f"Salmon version is not compatible with that specified in the configuration file! Terminating!"
+            msg = f"Salmon version is not compatible with that specified in the configuration file!" \
+                  f"Terminating!"
             logger.error(msg)
     
     salmon_dir = {}
@@ -208,14 +212,16 @@ def main():
     for sample in config['samples'].keys():
         bc_dir = os.path.join(parent_dir[sample], 'analysis', 'feature_bc_matrix')
         os.makedirs(bc_dir, exist_ok=True)
-        cmd = f"{os.path.join(UTILS_PATH, 'reformat.py')} {os.path.join(salmon_dir[sample], 'quant.sf')} {bc_dir}"
+        cmd = f"{os.path.join(UTILS_PATH, 'reformat.py')} {os.path.join(salmon_dir[sample], 'quant.sf')} " \
+              f"{bc_dir} --gtf {salmon_gtf} --num-cpus {args.num_cpus}"
         job_id = [job_ids_reformat[sample]]
         utils.check_sbatch(cmd, args=args, dependencies=job_id)
 
     # enforce cleaning - except salmon output
     if not args.keep_all:
         for sample in config['samples'].keys():
-            cmd = f"{os.path.join(SCRIPTS_PATH, 'run_clean')} {mapping_dir[sample]} {raw_dir[sample]} {minimap_dir[sample]}"
+            cmd = f"{os.path.join(SCRIPTS_PATH, 'run_clean')} {mapping_dir[sample]} {raw_dir[sample]} " \
+                  f"{minimap_dir[sample]}"
             job_id = [job_ids_salmon[sample]]
             utils.check_sbatch(cmd, args=args, dependencies=job_id)
     

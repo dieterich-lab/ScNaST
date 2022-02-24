@@ -16,7 +16,7 @@ Getting started
 The Python3 scripts can be run in the same environment as the one created for [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore),
 however additional dependencies are required, such as `PyTables`, and can be installed via `pip` or `conda`.
 
-Since the analysis notebooks depend on many more packages, we recommend to create a separate python virtual environment *e.g.*
+However, since the analysis notebooks depend on many more packages, we recommend to create a separate python virtual environment *e.g.*
 
 
 ```bash
@@ -30,7 +30,7 @@ pip install -r environment.txt
 ## Usage
 
 These scripts are currently not *installable* ( *i.e.* they are not a package ), and **MUST** be called from this directory ( *visiumtools* ). 
-In addition, you might have to *e.g.* `chmod +x fmt_nanopore_visium.py`. This is not a clean pythonic solution, but a temporary workaround
+In addition, you might have to *e.g.* `chmod +x fmt_nanopore_visium.py`. This is not a clean pythonic solution, but only a temporary workaround
 as we intend to eventually integrate these with the [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore) pipeline.
 
 **utils**

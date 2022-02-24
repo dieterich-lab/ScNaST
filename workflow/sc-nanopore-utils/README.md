@@ -45,7 +45,7 @@ Edit `config.yml`, and under *sc-nanopore-utils*
 ./get_iso_mtx.py ../config.yaml
 ```
 
-or `runjob` to submit using [Slurm](https://slurm.schedmd.com/documentation.html)
+or `runjob` to submit using [Slurm](https://slurm.schedmd.com/documentation.html) **Highly recommended!**
 
 ```bash
 sbatch runjob

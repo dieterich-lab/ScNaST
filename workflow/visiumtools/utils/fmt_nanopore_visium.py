@@ -55,8 +55,10 @@ def main():
                         to match the Illumina barcodes e.g. tissue_positions_list.csv.""", 
                         action='store_true')
     
-    parser.add_argument('--feature-type', help="""feature_type field for h5 file.""", 
-                        default='Transcript Expression', type=str)
+    # unless this is "Gene Expression", this won't load into read_visium!
+    #parser.add_argument('--feature-type', help="""feature_type field for h5 file.""", 
+    #                    default='Transcript Expression', type=str)
+    
     parser.add_argument('--genome', help="""genome field for h5 file.""", 
                         default='', type=str)
     
@@ -119,12 +121,12 @@ def main():
 
         features = h5file.create_group(group, 'features', '')
         h5file.create_array(features, '_all_tag_keys', np.asarray(['genome']), "")
-        h5file.create_carray(features, 'feature_type', obj=np.asarray([args.feature_type]*mat.shape[1]))
+        h5file.create_carray(features, 'feature_type', obj=np.asarray(['Gene Expression']*mat.shape[1]))
         h5file.create_carray(features, 'genome', obj=np.asarray([args.genome]*mat.shape[1]))
         h5file.create_carray(features, 'id', obj=np.asarray(ids))
         h5file.create_carray(features, 'name', obj=np.asarray(var))
 
-        h5file.root._v_attrs.chemistry_description = "Spatial 3' v1 (Nanopore)"
+        h5file.root._v_attrs.chemistry_description = args.chemistry
         h5file.root._v_attrs.filetype = "matrix"
         h5file.root._v_attrs.library_ids = np.asarray([sample.encode('UTF-8')])
 

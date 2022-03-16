@@ -1,5 +1,5 @@
-""" This module contains helper functions mostly taken from the pbio project.
-They are copied here to avoid installing the entire pbio project.
+""" This module contains some helper functions mostly taken from https://github.com/dieterich-lab/pybio-utils
+They are copied here to avoid installing the entire project.
 """
 
 import os
@@ -447,6 +447,57 @@ def call_if_not_exists(cmd, out_files, in_files=[], overwrite=False, call=True,
     return ret_code
 
 
+def create_symlink(src, dst, remove=True, create=False, call=True):
+    """ Creates or updates a symlink at dst which points to src.
+
+    Parameters
+    ----------
+    src: string
+        the path to the original file
+
+    dst: string
+        the path to the symlink
+
+    remove: bool
+        whether to remove any existing file at dst
+
+    create: bool
+        whether to create the directory structure necessary for dst
+
+    call: bool
+        whether to actually do anything
+
+    Returns
+    -------
+    None, but the symlink is created
+
+    Raises
+    ------
+    FileExistsError, if a file already exists at dst and the remove flag is
+        False
+    """
+    import logging
+
+    if not call:
+        return
+
+    if os.path.lexists(dst):
+        if remove:
+            msg = ("[utils.create_symlink]: file already exists at: '{}'. It "
+                "will be removed".format(dst))
+            logging.warning(msg)
+            os.remove(dst)
+        else:
+            msg = "[utils.create_symlink]: file already exists at: '{}'. Skipping.".format(dst)
+            logging.warning(msg)
+            return
+
+    if create:
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+
+    os.symlink(src, dst)
+    
+
 # slurm
 
 def check_sbatch(cmd, call=True, num_cpus=1, mem="2G", time=None, 
@@ -774,6 +825,7 @@ def check_files_exist(files, raise_on_error=True, logger=logger,
 
 # parallel
 
+
 def apply_parallel_iter(items, num_procs, func, *args, progress_bar=False, total=None, num_groups=None, backend='loky'):
     """ This function parallelizes applying a function to all items in an iterator using the 
         joblib library. In particular, func is called for each of the items in the list. (Unless
@@ -828,6 +880,161 @@ def apply_parallel_iter(items, num_procs, func, *args, progress_bar=False, total
     else:
         ret_list = joblib.Parallel(n_jobs=num_procs, backend=backend)(joblib.delayed(func)(item, *args) for item in items)
     return ret_list
+
+
+def apply_parallel(data_frame, num_procs, func, *args, progress_bar=False, backend='loky'):
+    """ This function parallelizes applying a function to the rows of a data frame using the
+        joblib library. The function is called on each row individually.
+
+        This function is best used when func does not have much overhead compared to
+        the row-specific processing. For example, this function is more appropriate than
+        apply_parallel_split when all of the processing in func is dependent only on the 
+        values in the data rows.
+
+        Args:
+            data_frame (pandas.DataFrame): A data frame
+
+            num_procs (int): The number of processors to use
+
+            func (function pointer): The function to apply to each row in the data frame
+
+            args (variable number of arguments): The other arguments to pass to func
+
+        Returns:
+            list: the values returned from func for each row (in the order specified by
+                joblib.Parallel)
+
+        Imports:
+            joblib
+            tqdm, if progress_bar is True
+    """
+    import joblib
+
+    if len(data_frame) == 0:
+        return []
+
+        
+    if progress_bar:
+        import tqdm
+        ret_list = joblib.Parallel(n_jobs=num_procs, backend=backend)(joblib.delayed(func)(row[1], *args) 
+            for row in tqdm.tqdm(data_frame.iterrows(), total=len(data_frame), 
+                leave=True, file=sys.stdout))
+    else:
+        ret_list = joblib.Parallel(n_jobs=num_procs, backend=backend)(joblib.delayed(func)(row[1], *args) 
+            for row in data_frame.iterrows())
+    return ret_list
+
+
+def apply_df_simple(data_frame, func, *args, progress_bar=False, backend='loky'):
+    """ This function applies func to all rows in data_frame, passing in arguments args. It
+        collects the results as a list with the return value of func(row, *args) as each item
+        in the list. It is not parallelized in any way.
+
+        This function is preferable to pd.DataFrame.apply when func does not return something
+        that is easily parsed by pandas. An example of such a return type is when func
+        returns numpy arrays of varying length based on the values of the rows in data_frame.
+
+        Args:
+            data_frame (pandas.DataFrame): A data frame
+
+            func (function pointer): The function to apply to each row in the data frame
+
+            args (variable number of arguments): The other arguments to pass to func
+
+        Returns:
+            list: the values returned from func for each row (in the order specified by
+                pd.DataFrame.iterrows
+
+        Imports:
+            joblib, indirectly
+
+    """
+    num_procs = 1
+    return apply_parallel(data_frame, num_procs, func, *args, progress_bar=progress_bar, backend=backend) 
+
+
+def apply_parallel_groups(groups, num_procs, func, *args, progress_bar=False, backend='loky'):
+    """ This function parallelizes applying a function to groupby results using the 
+        joblib library. In particular, func is called for each of the groups in groups. 
+        
+        This function is best used when func has little overhead compared to the group processing.
+
+        Unlike DataFrame.groupby().apply(func), this function does not attempt to guess
+        the type of return value (i.e., DataFrame sometimes, Series sometimes, etc.). It
+        just always returns a list of the values returned by func. The order of the
+        returned list is dependent on the semantics of joblib.Parallel, but it is typically
+        in the same order as the groups
+
+        Args:
+            groups (pandas.Groupby): The result of a call to DataFrame.groupby
+
+            num_procs (int): The number of processors to use
+
+            func (function pointer): The function to apply to each group
+
+            args (variable number of arguments): The other arguments to pass to func
+
+        Returns:
+            list: the values returned from func for each group (in the order specified by
+                joblib.Parallel)
+
+        Imports:
+            joblib
+            tqdm, if progress_bar is True
+    """
+    import joblib
+    if len(groups) == 0:
+        return []
+
+    if progress_bar:
+        import tqdm
+        ret_list = joblib.Parallel(n_jobs=num_procs, backend=backend)(joblib.delayed(func)(group, *args) 
+            for name,group in tqdm.tqdm(groups, total=len(groups), leave=True, file=sys.stdout))
+    else:
+        ret_list = joblib.Parallel(n_jobs=num_procs, backend=backend)(joblib.delayed(func)(group, *args) 
+            for name, group in groups)
+    return ret_list
+
+
+def apply_parallel_split(data_frame, num_procs, func, *args, progress_bar=False, num_groups=None, backend='loky'):
+    """ This function parallelizes applying a function to the rows of a data frame using the
+        joblib library. The data frame is first split into num_procs equal-sized groups, and
+        then func is called on each of the groups.
+
+        This function is best used when func has a large amount of overhead compared to the
+        other processing. For example, if a large file needs to be read for processing each
+        group, then it would be better to use this function than apply_parallel_groups.
+
+        Otherwise, the semantics are the same for this function as for apply_parallel_groups.
+
+        
+        Args:
+            data_frame (pandas.DataFrame): A data frame
+
+            num_procs (int): The number of processors to use
+
+            func (function pointer): The function to apply to each row in the data frame
+
+            args (variable number of arguments): The other arguments to pass to func
+
+        Returns:
+            list: the values returned from func for each group (in the order specified by
+                joblib.Parallel)
+
+        Imports:
+            numpy
+            joblib (indirectly)
+            tqdm (indirectly), if progress_bar is True
+    """
+    import numpy as np
+    
+    if num_groups is None:
+        num_groups = num_procs
+
+    parallel_indices = np.arange(len(data_frame)) // (len(data_frame) / num_groups)
+    split_groups = data_frame.groupby(parallel_indices)
+    res = apply_parallel_groups(split_groups, num_procs, func, *args, progress_bar=progress_bar, backend=backend)
+    return res
 
 
 # bam_utils
@@ -991,4 +1198,136 @@ def get_pysam_alignment_file(f, mode=None, **kwargs):
         msg = "Could not interpret value as pysam.AlignmentFile: {}".format(f)
         raise ValueError(msg)
     
+
+# gtf_utils
+
+
+import re
+R_SEMICOLON = re.compile(r'\s*;\s*')
+R_COMMA     = re.compile(r'\s*,\s*')
+R_KEYVALUE  = re.compile(r'(\s+|\s*=\s*)')
+
+
+gtf_field_names = [
+    "seqname",
+    "source",
+    "feature",
+    "start",
+    "end",
+    "score",
+    "strand",
+    "frame",
+    "attributes"
+]
+
+
+def _get_gtf_value(value):
+
+    if not value:
+        return None
+
+    # Strip double and single quotes.
+    value = value.strip('"\'')
+
+    # Return a list if the value has a comma.
+    if ',' in value:
+        value = re.split(R_COMMA, value)
+    # These values are equivalent to None.
+    elif value in ['', '.', 'NA']:
+        return None
+
+    return value
+
+
+def parse_gtf_attributes(row):
+    """ This function parses the attributes of a GTF entry, where the GTF fields
+        are consistent with gtf_field_names. This returns a new GTF entry with
+        the attributes added as keys.
+
+        For "flag" attributes, the key and the value are both the name of the
+        flag.
+
+        Args:
+            row (dict-like): a dictionary-like data structure (such as a dict 
+                or pd.Series) which includes the gtf_field_names. Additionaly,
+                the object must have a copy() method.
+
+        Returns:
+            :
+            dict-like: an object of the same types as the input which includes
+                all of the fields present in the input, as well as each
+                attribute as a new field (e.g., key in a dictionary)
+
+        Imports:
+            re
+    """
+
+    attributes = row['attributes']
     
+    attributes = [x for x in re.split(R_SEMICOLON, attributes) if x.strip()]
+    result = row.copy()
+
+    for i, attribute in enumerate(attributes, 1):
+        # It should be key="value".
+        try:
+            key, _, value = re.split(R_KEYVALUE, attribute, 1)
+        # But sometimes it is just "value".
+        except ValueError:
+            key = 'INFO{}'.format(i)
+            value = attribute
+        # Ignore the field if there is no value.
+        if value:
+            result[key] = _get_gtf_value(value)
+   
+    return result
+
+
+def _parse_gtf_group(rows):
+    """ This is a helper function for parsing GTF attributes from a data frame.
+        It is not intended for external use.
+    """
+    import pandas as pd
+    
+    res = apply_df_simple(rows, parse_gtf_attributes)
+    res = pd.DataFrame(res)
+    return res
+
+
+def parse_all_gtf_attributes(gtf_df, num_cpus=1, progress_bar=False, num_groups=100):
+    """ This function parses the attributes of each entry in the given GTF
+        data frame. It returns a new data frame with the attributes added
+        as fields.
+
+        See parse_gtf_attributes for more details.
+
+        Args:
+            gtf_df (pd.DataFrame): a data frame containing fields consistent
+                with gtf_field_names
+
+            num_cpus (int): the number of CPUs to use for extracting the features
+
+            progress_bar (bool): whether to show a progress bar
+
+            num_groups (int): the number of groups into which the data frame
+                will be split for parallelization
+
+        Returns:
+            pd.DataFrame: a new data frame with each attribute added as a column
+
+        Imports:
+            pandas
+            misc.parallel
+    """ 
+    import pandas as pd
+    
+    gtf = apply_parallel_split(
+        gtf_df, 
+        num_cpus, 
+        _parse_gtf_group, 
+        progress_bar=progress_bar, 
+        num_groups=num_groups)
+
+    gtf = pd.concat(gtf)
+    return gtf
+
+

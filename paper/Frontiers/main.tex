@@ -27,14 +27,23 @@
 
 \def\keyFont{\fontsize{8}{11}\helveticabold }
 \def\firstAuthorLast{Sample {et~al.}} %use et al only if is more than 1 author
-\def\Authors{Etienne Boileau\,$^{1,2,3}$, Christoph Dieterich\,$^{1,2,3}$}
+\def\Authors{Etienne Boileau\,$^{1,2,3}$, Xue Li\,$^{4}$, Ramona Casper$^{5}$, Janine Altm{\"u}ller$^{6}$, Florian Leuschner\,$^{4,7}$, Christoph Dieterich\,$^{1,2,3}$}
 % Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
 % If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
 \def\Address{$^{1}$Section of Bioinformatics and Systems Cardiology, Klaus Tschira Institute for Integrative Computational Cardiology, Im Neuenheimer Feld 669, 69120 Heidelberg, Germany
 \\
 $^{2}$Department of Internal Medicine III (Cardiology, Angiology, and Pneumology), University Hospital Heidelberg, Im Neuenheimer Feld 669, 69120 Heidelberg, Germany
 \\
-$^{3}$DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/Mannheim}
+$^{3}$DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/Mannheim
+\\
+$^{4}$Department of Cardiology, University Hospital Heidelberg, Im Neuenheimer Feld 410, 69120 Heidelberg, Germany
+\\
+$^{5}$Cologne Center for Genomics (CCG), University of Cologne, Weyertal 115b, 50931 Cologne, Germany
+\\
+$^{6}$Berlin Institute of Health at Charit{\'e}-Universit{\"a}tsmedizin Berlin, Max Delbr{\"u}ck Center for Molecular Medicine 
+\\
+$^{7}$Center for Systems Biology, Massachusetts General Hospital and Harvard Medical School, Simches Research Building, 185 Cambridge Street, Boston, Massachusetts 02114, USA
+}
 % The Corresponding Author should be marked with an asterisk
 % Provide the exact contact address (this time including street name and city zip code) and email of the corresponding author
 \def\corrAuthor{Christoph Dieterich}
@@ -70,7 +79,6 @@ $^{3}$DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/M
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 \begin{document}
 \onecolumn
 \firstpage{1}
@@ -89,58 +97,122 @@ $^{3}$DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/M
 
 
 \begin{abstract}
-
-%%% Leave the Abstract empty if your article does not require one, please see the Summary Table for full details.
 \section{}
-
 We introduce Single-cell Nanopore Spatial Transcriptomics (\scnast), a set of tools to facilitate the analysis of spatial gene expression from second- and third-generation sequencing, allowing to generate a full-length single-cell transcriptional landscape of the tissue microenvironment.
-%short and long read sequencing of cDNA synthesized \insi on tissue sections
 Taking advantage of the Visium Spatial platform, we adapted a strategy recently developed to assign barcodes to long-read single-cell sequencing data for spatial capture technology.
-
-
+Here, we demonstrate our workflow using four short axis sections of the mouse heart following myocardial infarction.
+We show that \red{results ...}
+Molecular signatures involved in cardiac remodeling integrated with morphological context may support the development of new therapeutics towards the treatment of heart failure and the reduction of cardiac complications.
 
 \tiny
- \keyFont{ \section{Keywords:} Spatial transcriptomics, Single-cell RNA sequencing, Oxford Nanopore, keyword, keyword} 
+ \keyFont{ \section{Keywords:} Spatial transcriptomics, Single-cell RNA sequencing, Oxford Nanopore Technology, Myocardial Infarction} 
 \end{abstract}
 
 \section*{Introduction}
+Cell type heterogeneity has recently emerged as a major aspect in redrawing the cellular picture of the mammalian heart~\citep{Wang2020:human_heart,Tucker2020:human_heart,Litvinukova2020:human_heart}. 
+Single-cell RNA-seq (scRNA-seq) technology has enabled to explore crosstalk of different cardiac cell populations to identify response signatures involved in remodeling after myocardial infarction (MI) and ischemic injury~\citep{Cui2020:regenerative_cm,Forte2020:interstitial,Ruiz-Villalba2020:CF,Vafadarnejad2020:cardiac_neutrophil,Molenaar2021:ischemic,Gladka2021:CM_ZEB2,Tombor2021:endothelial_plasticity,Heinrichs2021:B-cell}.
+These and other data provide a valuable compendium of information to better understand transcriptional changes occuring in cardiomyocyte and non-cardiomyocyte sub-populations in healthy, injured, and regenerating hearts.
+However, in all these studies, the original tissue architecture is destroyed and, in general, the morphological context is lost, including the relationship of cells to infarct, border and remote zones~\citep{Duijvenboden2019:border_zone}.
 
-%For Original Research Articles the introduction should be succinct, with no subheadings 
+Recent development in spatial transcriptomics addresses this challenge, but few studies only have provided spatially resolved insights into the cardiac transcriptome.
+Techniques such as microdissection~\citep{Wu2016:zebrafish_cm,Burkhard2018:embryonic_heart} or, in particular, spatially barcoded arrays and \insi capturing, have enabled to retain the spatial information while profiling the whole transcriptome at near single-cell resolution, allowing to shed light on localized tissue neighbourhoods~\citep{Asp2017:fetal_markers,Asp2019:spatial_atlas_devel_heart}, but a detailed characterization of cellular zones of injury, repair and/or remodeling is lacking. MI is a complex spatio-temporal heterogeneous disease involving the whole heart, and unbiased spatial transcriptomics holds a promise to add tissue context to molecular profiling in the search of novel therapeutics.
 
+One of the most established spatial transcriptomics methods is now widely available as the Visium platform by 10x Genomics. 
+After the tissue section is fixed on the spatial slide, stained, and imaged, it is permeabilized to release RNA to bind to capture probes for on-slide cDNA synthesis.
+Library preparation is performed off-slide, and spatial barcodes and tissue image are used to overlay transcriptomics data with tissue context.
+Although several new such methods have recently been published~\citep{Rodriques2019:slide-seq,Liu2020:DBiT-seq}, they are for the most part relying on short-read library preparation. Thus they are subject to amplification biases and fail to generate sufficient overlaps to reconstruct transcriptomes \denovo.
 
-% For Original Research articles, please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
+Adequate gene and transcript models are instrumental towards relevant proof of concepts and investigational new drug development in translational cardiac research~\citep{Muller2021:pig_transcriptome}. 
+%Third-generation or long-read sequencing allow to reconstruct truthful assemblies with fewer gaps and to characterize complete transcript isoforms and chimeric transcripts, at the cost however of lower throughput and poor base-calling accuracy, which may be a problem for cell or spatial barcode assignment.
+Third-generation or long-read sequencing allow to reconstruct truthful assemblies with fewer gaps and to characterize complete transcript isoforms and chimeric transcripts.
+This has recently been taken to the single-cell level using either Pacific Biosciences (PacBio) or Oxford Nanopore technology (Nanopore)~\citep{Gupta2018:ScISOr-Seq,Lebrigand2020:sicelore,Volden2020:R2C2_10x,Wang2021:scnapbar,Joglekar2021:spatial_brain}.
+
+Here, taking advantage of the conceptual similarity between spatial and cell barcodes, we introduce Single-cell Nanopore Spatial Transcriptomics (\scnast), a set of tools to facilitate whole transcriptome spatial profiling of full-length transcripts, based on a previously published Bayesian approach for cell barcode assignment~\citep{Wang2021:scnapbar}. Our method relies on the commercially available Visium platform by 10x Genomics and Nanopore long-read sequencing, although it can in principle be extended to other technologies, as long as a hybrid sequencing approach is used for spatial barcode assignment. 
+
+We demonstrate \ref{results...}
+% direct Nanopore
+
 
 \section*{Material and Methods}
 
+\subsection*{Experimental model of myocardial infarction}
+A C57BL/6 mouse (female, 8 weeks old, Janvier Labs) was exposed to 5\% isoflurane for anesthesia. An intubation cannula was inserted orally into the trachea. The mouse was fixed on a heating plate at 37$^\circ$C and maintained under anesthesia with 2\% isoflurane. An incision was made from the left sternum to the midclavicular line. Skins and muscle layers were stretched with forceps and sutures. Another incision was made between the third and fourth intercostal space. The heart was exposed and subjected to permanent myocardial infarction with ligation of the left anterior descending (LAD) coronary artery. When the ribs and skins were fully closed, the isoflurane supply was cut off. Oxygen was then supplied until normal breathing was resumed. 24 hours after surgery, 100$\mu$l of blood was collected from the retro-orbital sinus. After incubation with heparin for one hour at room temperature, tubes containing blood were centrifuged for 15 min (12,000g at room temperature). 10$\mu$l of the supernatant plasma was diluted with 390$\mu$l PBS for Cardiac Troponin T (cTnT) analysis. The cTnT level is a reference for cardiac infarction size.
 
-\subsection*{Mouse heart samples}
-
+\subsection*{Heart extraction and cryosection}
+Three days after permanent LAD ligation, the mouse was sacrificed for organ harvest. After washing with cold PBS several times to remove the blood, the heart was transferred into a bath of isopentane (Millipore Sigma) frozen by liquid nitrogen. The freshly obtained heart was kept fully submerged in isopentane for 5 min until fully frozen. Pre-cooled Cryomold on the dry ice was filled with chilled TissueTek OCT compound without introducing bubbles. The frozen tissue was then transferred into the OCT with pre-cooled forceps and placed on the dry ice until the OCT was completely frozen. OCT-embedded tissue blocks were removed from the Cryomold and mounted on the specimen stage. 10$\mu$m sections were cut in a cryostat at -10$^\circ$C and placed within a Capture Area on the pre-equilibrated Visium Spatial Slides (10x Genomics). The slides were later sealed in individual 50 ml Falcon at -80$^\circ$C ready for further processing. 
 
 \subsection*{10X Genomics Visium experiments}
-
+Four short axis sections of the heart were processed according to the manufacturer's protocol. The Visium Spatial Tissue Optimization Slide \& Reagent kit (10x Genomics) was used to optimize permeabilization conditions. Tissue permeabilization was performed for 24 min. Spatially barcoded full-length cDNA was generated using the Visium Spatial Gene Expression Slide \& Reagent kit (10x Genomics). A fraction of each cDNA library was used for nanopore sequencing. cDNA amplification was then conducted for 20 cycles of PCR (identified by qPCR), and 400$\mu$l were used in the 10xGenomics Visium library preparation (100$\mu$l per section). The libraries were sequenced on a NovaSeq6000 (Illumina), with 29 bases from read 1 and 90 bases from read 2, at a depth of 160M reads per section (640M reads in total). The raw sequencing data was processed with the 10x Genomics Space Ranger 1.1.2 and mapped to the mm10 genome assembly (mm10-2020-A).
 
 \subsection*{Oxford Nanopore sequencing libraries}
+Libraries for Nanopore sequencing were prepared according to the manufacturer's protocol for direct sequencing of native RNAs (SQK-DCS109 Oxford Nanopore Technologies) with the following minor modifications: 2 ml tubes were used for the HulaMixer, pellets were re-suspended with ABB (room temperature) and centrifugated 2 times, elution was performed in 15$\mu$l to have material for TapeStation and Qubit BR, and Flow Cell Priming kit EXP-FLP002 (new version) was used. Starting with 200ng cDNA each, four GridIon flow cells (FLO-MIN106) were loaded with 12$m$l libraries, with a final cDNA concentration determined by Qubit BR. Base calling was done with Guppy v5.0.12. The High accuracy (HAC) model was selected for base calling (Q-Score cut-off $>$9).
+
+\subsection*{Spatial barcode assignment}
+To account for source-specific quality differences, each heart section (Illumina libraries) was processed separately using Scanpy v1.7.2~\citep{Wolf2018:scanpy}, keeping only spatial barcodes with approximately 150 $<$ counts $<$ 18000, 250 $<$ genes $<$ 5000, detected in at least 2 spots, and with less than 40\% mitochondrial counts. The resulting datasets were concatenated, normalized, and the union of highly variable genes (per section) were kept for final analysis. Batch balanced KNN (BBKNN)~\citep{Polanski2019:bbknn} with ridge regression~\citep{Park2020:thymic_atlas} was used for integration and batch correction, starting from a coarse clustering obtained from a BBKNN-corrected graph. 
+
+For the Oxford Nanopore libraries, samples were demultiplexed and processed with ScNapBar v1.1.0 using a Naıve Bayes model to assign spatial barcodes~\citep{Wang2021:scnapbar}.
+Briefly, for each heart section, the Space Ranger results (Illumina libraries) were used to parametrize a model of barcode alignment features to discriminate correct versus false barcode assignment in the Nanopore data. 
+FASTQ files were mapped using minimap2 v2.21~\citep{Heng2018:minimap}. 
+For transcript isoform quantification, a de novo transcriptome annotation was generated. 
+Alignment files were processed by StringTie v2.1.5 in long read mode with the reference annotation to guide the assembly process~\citep{Kovaka2019:stringtie_long}. 
+The annotations were merge into a non-redundant set of transcripts and compared to the reference using GffCompare v0.12.2~\citep{Pertea2020:gff}, after removing single-exon transcripts. 
+To generate feature-spatial barcode matrices, alignment files were split into multiple files, one per spatial barcode, based on the barcode assignments, converted to FASTQ, and aligned to the de novo transcriptome with minimap2. 
+Abundances were quantified with Salmon v1.5.2 in alignment-based mode using a long read error model~\citep{Patro2017:salmon}. 
+Each section was processed separately using Scanpy v1.7.2 and integrated with BBKNN, as described above for the Illumina data.
+Spatial barcodes were filtered for counts (approximately 50 $<$ counts $<$ 4000), transcripts (approximately 50 $<$ transcripts $<$ 2000, detected in at least 2 spots), and ribosomal genes (< 40\%).
+
+\subsection*{Identification of anatomical regions}
+For the Illumina libraries, the neighborhood graph was computed using BBKNN. Spots were clustered with a low resolution (0.3) to identify anatomical regions such as infarct, border and remote zones. Marker genes were identifed using a Wilcoxon rank sum test with Benjamini–Hochberg correction, by comparing the expression of each gene in a given cluster against the rest of the spots. The final clusters were manually annotated.
+
+Labels were then assigned to Nanopore spatial barcodes based on the set of matching Illumina barcodes. 
+However, not all assigned barcodes were labeled due to quality control filtering criteria that were different between Illumina and Nanopore datasets. 
+To assign labels to the remaining Nanopore barcodes, seed labelling was performed with scANVI using the set of assigned labels as groundtruth~\citep{Xu2021:scANVI}.
+The top expressed transcripts were then identified as described above for the Illumina data.
+
+\subsection*{Spatial spot deconvolution}
+Spatial spots were deconvoluted using stereoscope (scvi-tools v0.15.0)~\citep{Andersson2020:stereoscope}. Heart data (Smart-Seq2 and 10x Genomics) from the Tabula Muris~\citep{Schaum2018:Tabula_muris} were used as reference dataset and highly variable genes were identified. For the Smart-Seq2 data, gene length normalization was applied. The model was trained on the single cell reference dataset on the intersection of genes found in the spatial (Illumina) data, and proportions were inferred for each Visium spot for each cell type in the reference dataset. Labels were then assigned to Nanopore spots are described above.
+
+\subsection*{Spatial gene expression (Illumina)}
+
+\subsection*{Differential transcript usage (Nanopore)}
+To identify changes in relative usage of transcripts/isoforms within genes, differential transcript usage (DTU) tests were performed using satuRn~\citep{Gilis2021:satuRn}. Only multi-exon transcripts and genes with more than one isoform were kept for the analyses. The transcript count matrix was further filtered to keep transcripts expressed in a worthwhile number of spots, determined by the design (but greater than at least 10\% of the smallet group size), with a CPM count above a threshold of 1(median library size)$^{-1}$. In addition, transcripts were kept only if they had a minimum count of 1 across all spots. A quasi-binomial generalized linear model was fit using a design comparing each anatomical region with another, or each anatomical region with the rest of all regions. A two-stage testing procedure was performed using stageR~\citep{R:stageR}, with an OFDR of 0.05. Results were reported using a student's t-test statistic, computed with estimated log-odds ratios.
 
 
-\subsection*{Cell barcode assignment}
-
+% TODO: /prj/Florian_Leuschner_spatial/analysis/Nanopore/mm10-2020-A_build
 
 
 \section*{Results}
 Fresh-frozen tissue samples were stained, imaged and fixed on Visium Spatial Gene Expression Slides (10X Genomics) for permeabilization and \insi RNA capture.
-Full-length cDNA libraries were split for the preparation of 3' short-read and long-read Nanopore sequencing libraries.
-Short-read data were used for the assignment of spatial barcodes to Nanopore reads using the \scn workflow, and subsequently used to define anatomical regions within the tissue organization (Fig.~\ref{fig:1}a).
+Full-length cDNA libraries were split for the preparation of 3' Illumina short-read and direct long-read Nanopore sequencing libraries.
+Short-read data were used for the assignment of spatial barcodes to Nanopore reads using the \scn workflow, and subsequently used to define anatomical regions within the tissue organization (Fig.~\ref{fig:1}A).
 Long-read data were used for transcriptome assembly and transcript abundance quantification, and layered onto the stained images to reveal the spatial organization of isoform expression.
+The Nanopore data comprises of four heart slices (or samples) with a total of 25,5 million reads, reaching a relatively high sequencing saturation (Fig.~\ref{fig:1}B), and providing \red{we expect here to have a more uniform coverage... see Figure 1 C, this is a little unexpected. I am checking this...}
+% a uniform representation of full-length transcripts
+After spatial barcode assignment, libraries had a median of 2.8 million reads per sample, with over 70\% assigned reads (Figs.~\ref{fig:1}D and \nameref{fig:S1}A).
+%nanopore 7616 × 12590, raw = 7616, 19794
+%illumina 7708 × 8160, raw = 7708, 14023
+Despite variations in transcriptome alignments between samples, we observed a good correlation between spots across all samples between Illumina and Nanopore libraries (Fig.~\nameref{fig:S1}B,C, see also Figs.~\nameref{fig:S2} to \nameref{fig:S4}).
 
+Clustering based on short-read gene expression defined four broad morphological regions: two remote zones that stem from differences in sequencing depth between heart slices, a border zone, and the infarct. 
+The region classification was then transfered to the Nanopore data (Fig.~\ref{fig:2}A,B)
+% >>> spot-to-spot correlation based on image alignment betwen Illumina and Nanopore expression?
+Remote zones and, to a lesser extent the border zone, are largely associated with cardiomyocyte markers, while the border and infarct zones are characterized by a higher expression of endothelial, myofibroblast, and immune marker genes, as well as with markers of fibrosis and inflammation (Fig.~\ref{fig:2}C).
 
-% >>> CARDIAC RELEVANCE
-% background cardiac spatial transcriptomics, relevance to the field, etc.
-% We demonstrate WHAT in 4 heart slice after MI?
+We successfully assigned 7616 spatial spots, corresponding to distinct 19794 transcript isoforms in total, encoded by 12474 genes.
+Transcript isoforms were largely associated with exact matches to the reference annotation, multi-exon transcripts with at least one junction match to the reference (\eg exon skipping and exon extension), transcripts longer than the reference (containment of reference), completely novel transcripts (intergenic), transcripts with exonic overlap, or intronic transcripts (Fig.~\ref{fig:2}D). 
+Among all genes, we observed 8131 (67,3\%) that expressed a single isoform and 3953 (32.7\%) that expressed 2 or more isoforms (Fig.~\ref{fig:2}E).
+Although predicted by our assembly, genes with many isoforms were expressed at a lower threshold and were not included in our final analyses.
+We also noticed variations in the number of isoforms per gene across morphological regions of each heart slice, with significant differences between either of the remote zones and the border and the infarct areas, suggesting a higher transcriptome diversity in the healthy regions (Fig.~\ref{fig:2}F). 
 
+\subsection{Regional isoform switching ... }
+
+\red{A few interesting cases: Actc1, Crip2, Tnni3, Tmsb4x, Myh7, Sparc, Clu, etc.}
+\red{Need to add deconvolution results: can we identify cellular origin of some of the observed results?}
+\red{We need a way to visualize the different isoforms to see if they all make sense! Snapshots from IGV, etc.}
+\red{Add biological context: MI}
 
 
 \section*{Discussion}
-
 
 
 \section*{Data Availability}
@@ -149,11 +221,15 @@ The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF RE
 
 \section*{Code Availability}
 
+% TODO: provide scNapBar config and running scripts for reproducibility, they are currently under /prj/Florian_Leuschner_spatial/analysis/Nanopore/VX06_H61211a, b, c, and d
+% TODO: provide output of "scNaST" in particular transcriptomes under /prj/Florian_Leuschner_spatial/analysis/Nanopore/transcriptomes
+
 
 \section*{Author Contributions}
-CD supervised the research.
+CD, FL supervised the research.
 EB analyzed the data and wrote the manuscript. 
-XX performed the experiments.
+XL performed the experiments.
+JA, RC prepared libraries.
 All authors contributed to review and editing.
 
 
@@ -171,10 +247,28 @@ The authors declare that they have no conflict of interest.
 \section*{Supplemental Data}
 % \href{http://home.frontiersin.org/about/author-guidelines#SupplementaryMaterial}{Supplementary Material} should be uploaded separately on submission, if there are Supplementary Figures, please include the caption in the same file as the figure. LaTeX Supplementary Material templates can be found in the Frontiers LaTeX folder.
 
+%% Include only the SI item label in the paragraph heading. Use the \nameref{label} command to cite SI items in the text.
+\paragraph*{Supplementary Figure S1}
+\label{fig:S1}
+{\bf \scnast methodology.}
+
+\paragraph*{Supplementary Figure S2}
+\label{fig:S2}
+{\bf Quality control (Illumina).}
+
+\paragraph*{Supplementary Figure S3}
+\label{fig:S3}
+{\bf Quality control (Nanopore).}
+
+\paragraph*{Supplementary Figure S4}
+\label{fig:S4}
+{\bf Spatial distribution of UMIs or counts and genes or transcripts.}
+
 
 \bibliographystyle{Frontiers-Harvard} %  Many Frontiers journals use the Harvard referencing system (Author-date), to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal. For Humanities and Social Sciences articles please include page numbers in the in-text citations 
 %\bibliographystyle{Frontiers-Vancouver} % Many Frontiers journals use the numbered referencing system, to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal
-\bibliography{test}
+\bibliography{main.bib, spatial_trx.bib, ../../../../../../Bartenschlager/analysis/seurat_pipeline/paper/template/single_cell.bib, ../../../../../../Bartenschlager/analysis/seurat_pipeline/paper/template/software.bib}
+
 
 %%% Make sure to upload the bib file along with the tex file and PDF
 %%% Please see the test.bib file for some examples of references
@@ -189,18 +283,28 @@ The authors declare that they have no conflict of interest.
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=10cm]{logo1}% This is a *.eps file
+\includegraphics[width=\textwidth]{figure1}
 \end{center}
-\caption{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures}\label{fig:1}
+\caption{\scnast methodology. A Schematic of the \scnast workflow using a hybrid sequencing approach on Nanopore and Illumina platforms to assign spatial barcodes to long-read sequencing. B Nanopore sequencing saturation showing the number of splice sites detected at various levels of subsampling. A curve that reaches a plateau before getting to 100\% data suggest that all known junctions in the library have been detected. The curve shows the mean $\pm$ SE of four samples. C Normalized transcript coverage for Nanopore and Illumina. The curves show the mean $\pm$ SE of four samples. D Reads assigned by \scn at each step of the workflow. The bars show the mean $\pm$ SE of four samples.}\label{fig:1}
 \end{figure}
 
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=15cm]{logos}
+\includegraphics[width=\textwidth]{figure2}
 \end{center}
-\caption{This is a figure with sub figures, \textbf{(A)} is one logo, \textbf{(B)} is a different logo.}\label{fig:2}
+\caption{Defining morphological regions after MI. A Annotation of mouse heart regions after MI via short-read clustering, transfered to the Nanopore data. B UMAP representation of the Nanopore data using the region annotation from short-read clustering. C Dot plot showing the expresson of selected markers associated with the expresson of CM=cardiomyocytes, EC=endothelial cells, MFB=myofibroblasts, IM=immune cells, or with fibrosis and inflammation. D Barplot showing how full-length transcripts obtained with \scnast compare to the existing mouse annotation. Labels Complete (=), Multi-exon (j), Containment (k), Unknown (u), Exonic (x) , Intron(i), Overlap (o), Retained (m, n), and Contains (y) are explained in \url{https://ccb.jhu.edu/software/stringtie/gffcompare.shtml}. E Barplot showing the frequency distribution of the number of isoforms per gene, either stemming from the assembly, or found in the final data after quality control filtering. The median length of transcripts is indicated in each bar for each category. F Average number of isoform per gene detected for each morphological region. Significance was measured using a Mann-Witney U-test (*** = $<$0.001, **** = $<$0.0001)}\label{fig:2}
 \end{figure}
+
+
+
+%
+%\begin{figure}[h!]
+%\begin{center}
+%\includegraphics[width=15cm]{logos}
+%\end{center}
+%\caption{This is a figure with sub figures, \textbf{(A)} is one logo, \textbf{(B)} is a different logo.}\label{fig:2}
+%\end{figure}
 
 %%% If you are submitting a figure with subfigures please combine these into one image file with part labels integrated.
 %%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.

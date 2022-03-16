@@ -11,7 +11,7 @@ The annotations are merged into a non-redundant set of transcripts and compared 
 If running all rules, single-exon transcripts are removed from the annotation, transcript sequences are extracted using [GffRead](http://ccb.jhu.edu/software/stringtie/gff.shtml), and a [minimap2](https://lh3.github.io/minimap2/minimap2.html) index is generated (for transcriptome mapping).
 
 
-Currently no filtering is done on the BAM files prior to calling [StringTie](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual), but it is possible to specify custom thresholds ( *e.g* isoform abundance, minimum read coverage *etc.* ), see `config.yaml`. Options are not checked for consistency.
+Currently no filtering is done on the BAM files prior to calling [StringTie](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual), but it is possible to specify custom thresholds ( *e.g* isoform abundance, minimum read coverage *etc.* ), see `config.yaml` (parent directory). **Options are not checked for consistency.**
 
 
 Getting started
@@ -31,13 +31,17 @@ Getting started
 
 ## Dependencies
 
-The pipeline is run in the same environment created for [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore).
-Additional dependencies [StringTie](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual), [GffCompare](https://ccb.jhu.edu/software/stringtie/gffcompare.shtml), [GffRead](http://ccb.jhu.edu/software/stringtie/gff.shtml) are currently handled via the environment modules.
+The pipeline is run in the same environment as the one created for [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore).
+Additional dependencies [StringTie](http://ccb.jhu.edu/software/stringtie/index.shtml?t=manual), [GffCompare](https://ccb.jhu.edu/software/stringtie/gffcompare.shtml), [GffRead](http://ccb.jhu.edu/software/stringtie/gff.shtml) are currently handled via the [environment modules](https://modules.readthedocs.io/en/latest/).
+
+- stringtie/2.1.5
+- gffcompare/0.12.2
+- gffread/0.12.6
 
 
 ## Usage
 
-Edit `config.yml`, and 
+Edit `config.yml`, and under *assembly*
 
 ```bash
 snakemake --configfile ../config.yaml -j <num_cores> all --use-envmodules

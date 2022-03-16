@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#SBATCH -n 1
+#SBATCH -N 1
+#SBATCH -c 1
+#SBATCH --mem=25G
+#SBATCH --job-name="visium"
+#SBATCH --mail-user=eboileau@uni-heidelberg.de
+
+# source ~/.virtualenvs/sc3.9_spatial/bin/activate
+
+CFG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/ScNaST/workflow/config.yaml
+LOG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/ScNaST/workflow/visiumtools/logs/fmt.log
+utils/fmt_nanopore_visium.py $CFG --genome mm10 --logging-level INFO --log-file $LOG
+

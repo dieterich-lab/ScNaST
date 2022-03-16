@@ -8,21 +8,14 @@
 #SBATCH --job-name="iso"
 #SBATCH --mail-user=eboileau@uni-heidelberg.de
 
-# conda activate scNapBar
+# conda activate scNapBar-spatial
 # module load salmon/1.5.2
 
-# CFG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/seurat_pipeline/workflow/config.yaml
-# LOG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/seurat_pipeline/workflow/sc-nanopore-utils/logs/sc-nanopore-utils.log
-# ./get_iso_mtx.py $CFG --use-slurm --tmp /scratch/global_tmp/ --num-cpus 40 --logging-level INFO --log-file $LOG
-
-# same as in Bartensclager - for some samples we have a few barcodes with multiple NaN (genes) in quant.sf and matrix
-# need to regenerate the salmon output - this happens at the merging...
-CFG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/seurat_pipeline/workflow/config.yaml
-LOG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/seurat_pipeline/workflow/sc-nanopore-utils/logs/sc-nanopore-utils-cd.log
+CFG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/ScNaST/workflow/config.yaml
+LOG=/prj/Florian_Leuschner_spatial/analysis/Nanopore/ScNaST/workflow/sc-nanopore-utils/logs/sc-nanopore-utils.log
 ./get_iso_mtx.py $CFG --use-slurm --tmp /scratch/global_tmp/ --num-cpus 40 --logging-level INFO --log-file $LOG
 
 
-
-
+# NOTE:
 # if salmon is unable to assign enough fragments (using default --minAssignedFrags 10) for the "last" barcode
-# in the loop (run_salmon), slurm fails and terminates, e.g. this happened for 48hmock...
+# in the loop (run_salmon), slurm fails and terminates...

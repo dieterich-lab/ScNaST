@@ -27,7 +27,7 @@
 
 \def\keyFont{\fontsize{8}{11}\helveticabold }
 \def\firstAuthorLast{Boileau {et~al.}} %use et al only if is more than 1 author
-\def\Authors{Etienne Boileau\,$^{1,2,3}$, Xue Li\,$^{4}$, Ramona Casper$^{5}$, Janine Altm{\"u}ller$^{6}$, Florian Leuschner\,$^{4,7}$, Christoph Dieterich\,$^{1,2,3}$}
+\def\Authors{Etienne Boileau\,$^{1,2,3}$, Xue Li\,$^{2,3}$, Christian Becker$^{4}$, Ramona Casper$^{4}$, Janine Altm{\"u}ller$^{5}$, Florian Leuschner\,$^{2,3}$, Christoph Dieterich\,$^{1,2,3}$}
 % Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
 % If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
 \def\Address{$^{1}$Section of Bioinformatics and Systems Cardiology, Klaus Tschira Institute for Integrative Computational Cardiology, Im Neuenheimer Feld 669, 69120 Heidelberg, Germany
@@ -36,13 +36,9 @@ $^{2}$Department of Internal Medicine III (Cardiology, Angiology, and Pneumology
 \\
 $^{3}$DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/Mannheim
 \\
-$^{4}$Department of Cardiology, University Hospital Heidelberg, Im Neuenheimer Feld 410, 69120 Heidelberg, Germany
+$^{4}$Cologne Center for Genomics (CCG), University of Cologne, Weyertal 115b, 50931 Cologne, Germany
 \\
-$^{5}$Cologne Center for Genomics (CCG), University of Cologne, Weyertal 115b, 50931 Cologne, Germany
-\\
-$^{6}$Berlin Institute of Health at Charit{\'e}-Universit{\"a}tsmedizin Berlin, Max Delbr{\"u}ck Center for Molecular Medicine 
-\\
-$^{7}$Center for Systems Biology, Massachusetts General Hospital and Harvard Medical School, Simches Research Building, 185 Cambridge Street, Boston, Massachusetts 02114, USA
+$^{5}$Berlin Institute of Health at Charit{\'e}-Universit{\"a}tsmedizin Berlin, Max Delbr{\"u}ck Center for Molecular Medicine 
 }
 % The Corresponding Author should be marked with an asterisk
 % Provide the exact contact address (this time including street name and city zip code) and email of the corresponding author
@@ -136,16 +132,16 @@ We demonstrate \ref{results...}
 \section*{Material and Methods}
 
 \subsection*{Experimental model of myocardial infarction}
-A C57BL/6 mouse (female, 8 weeks old, Janvier Labs) was exposed to 5\% isoflurane for anesthesia. An intubation cannula was inserted orally into the trachea. The mouse was fixed on a heating plate at 37$^\circ$C and maintained under anesthesia with 2\% isoflurane. An incision was made from the left sternum to the midclavicular line. Skins and muscle layers were stretched with forceps and sutures. Another incision was made between the third and fourth intercostal space. The heart was exposed and subjected to permanent myocardial infarction with ligation of the left anterior descending (LAD) coronary artery. When the ribs and skins were fully closed, the isoflurane supply was cut off. Oxygen was then supplied until normal breathing was resumed. 24 hours after surgery, 100$\mu$l of blood was collected from the retro-orbital sinus. After incubation with heparin for one hour at room temperature, tubes containing blood were centrifuged for 15 min (12,000g at room temperature). 10$\mu$l of the supernatant plasma was diluted with 390$\mu$l PBS for Cardiac Troponin T (cTnT) analysis. The cTnT level is a reference for cardiac infarction size.
+A C57BL/6 mouse (female, 8 weeks old, Janvier Labs) was exposed to 5\% isoflurane for anesthesia. An intubation cannula was inserted orally into the trachea. The mouse was fixed on a heating plate at 37$^\circ$C and maintained under anesthesia with 2\% isoflurane. An incision was made from the left sternum to the midclavicular line. Skins and muscle layers were stretched with forceps and sutures. Another incision was made between the third and fourth intercostal space. The heart was exposed and subjected to permanent myocardial infarction with ligation of the left anterior descending (LAD) coronary artery. When the ribs and skins were fully closed, the isoflurane supply was cut off. Oxygen was then supplied until normal breathing was resumed. 
 
 \subsection*{Heart extraction and cryosection}
 Three days after permanent LAD ligation, the mouse was sacrificed for organ harvest. After washing with cold PBS several times to remove the blood, the heart was transferred into a bath of isopentane (Millipore Sigma) frozen by liquid nitrogen. The freshly obtained heart was kept fully submerged in isopentane for 5 min until fully frozen. Pre-cooled Cryomold on the dry ice was filled with chilled TissueTek OCT compound without introducing bubbles. The frozen tissue was then transferred into the OCT with pre-cooled forceps and placed on the dry ice until the OCT was completely frozen. OCT-embedded tissue blocks were removed from the Cryomold and mounted on the specimen stage. 10$\mu$m sections were cut in a cryostat at -10$^\circ$C and placed within a Capture Area on the pre-equilibrated Visium Spatial Slides (10x Genomics). The slides were later sealed in individual 50 ml Falcon at -80$^\circ$C ready for further processing. 
 
 \subsection*{10X Genomics Visium experiments}
-Four short axis sections of the heart were processed according to the manufacturer's protocol. The Visium Spatial Tissue Optimization Slide \& Reagent kit (10x Genomics) was used to optimize permeabilization conditions. Tissue permeabilization was performed for 24 min. Spatially barcoded full-length cDNA was generated using the Visium Spatial Gene Expression Slide \& Reagent kit (10x Genomics). A fraction of each cDNA library was used for nanopore sequencing. cDNA amplification was then conducted for 20 cycles of PCR (identified by qPCR), and 400$\mu$l were used in the 10xGenomics Visium library preparation (100$\mu$l per section). The libraries were sequenced on a NovaSeq6000 (Illumina), with 29 bases from read 1 and 90 bases from read 2, at a depth of 160M reads per section (640M reads in total). The raw sequencing data was processed with the 10x Genomics Space Ranger 1.1.2 and mapped to the mm10 genome assembly (mm10-2020-A).
+Four short axis sections of the heart were processed according to the manufacturer's protocol. Libraries were prepared individually, one per heart section. The Visium Spatial Tissue Optimization Slide \& Reagent kit (10x Genomics) was used to optimize permeabilization conditions. Tissue permeabilization was performed for 24 min. Spatially barcoded full-length cDNA was generated using the Visium Spatial Gene Expression Slide \& Reagent kit (10x Genomics). A fraction of each cDNA library was used for nanopore sequencing. cDNA amplification was then conducted for 20 cycles of PCR (identified by qPCR), and 400$\mu$l were used in the 10xGenomics Visium library preparation (100$\mu$l per section). The libraries were sequenced on a NovaSeq6000 (Illumina), with 29 bases from read 1 and 90 bases from read 2, at a depth of 160M reads per section (640M reads in total). The raw sequencing data was processed with the 10x Genomics Space Ranger 1.1.2 and mapped to the mm10 genome assembly (mm10-2020-A).
 
 \subsection*{Oxford Nanopore sequencing libraries}
-Libraries for Nanopore sequencing were prepared according to the manufacturer's protocol for direct sequencing of native RNAs (SQK-DCS109 Oxford Nanopore Technologies) with the following minor modifications: 2 ml tubes were used for the HulaMixer, pellets were re-suspended with ABB (room temperature) and centrifugated 2 times, elution was performed in 15$\mu$l to have material for TapeStation and Qubit BR, and Flow Cell Priming kit EXP-FLP002 (new version) was used. Starting with 200ng cDNA each, four GridIon flow cells (FLO-MIN106) were loaded with 12$m$l libraries, with a final cDNA concentration determined by Qubit BR. Base calling was done with Guppy v5.0.12. The High accuracy (HAC) model was selected for base calling (Q-Score cut-off $>$9).
+Libraries for Nanopore sequencing were prepared according to the manufacturer's protocol for direct cDNA Sequencing (SQK-DCS109 Oxford Nanopore Technologies) with the following minor modifications: The protocol was started with 200ng cDNA with the End-prep step. Final library elution was performed in 15$\mu$l to have material left for TapeStation analysis and Qubit BR measurement. Four GridIon flow cells (FLO-MIN106) were loaded with 12$\mu$L libraries (74-115ng) by using a Flow Cell Priming kit EXP-FLP002. Base calling was done with Guppy v5.0.12. The High accuracy (HAC) model was selected for base calling (Q-Score cut-off >9).
 
 \subsection*{Spatial barcode assignment}
 To account for source-specific quality differences, each heart section (Illumina libraries) was processed separately using Scanpy v1.7.2~\citep{Wolf2018:scanpy}, keeping only spatial barcodes with approximately 150 $<$ counts $<$ 18000, 250 $<$ genes $<$ 5000, detected in at least 2 spots, and with less than 40\% mitochondrial counts. The resulting datasets were concatenated, normalized, and the union of highly variable genes (per section) were kept for final analysis. Batch balanced KNN (BBKNN)~\citep{Polanski2019:bbknn} with ridge regression~\citep{Park2020:thymic_atlas} was used for integration and batch correction, starting from a coarse clustering obtained from a BBKNN-corrected graph. 
@@ -225,10 +221,20 @@ The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF RE
 % TODO: provide output of "scNaST" in particular transcriptomes under /prj/Florian_Leuschner_spatial/analysis/Nanopore/transcriptomes
 
 \section*{Author Contributions}
-TBD
+
+JA planned and supervised Visium experiments and library preparation.
+CB, RC performed Visium experiments and library preparation.
+
+%CD, FL supervised the research.
+%EB analyzed the data and wrote the manuscript. 
+%XL performed the experiments.
+%JA, RC prepared libraries.
+%All authors contributed to review and editing.
 
 \section*{Funding}
 TBD
+%EB and CD acknowledge support by the Klaus Tschira Stiftung gGmbH [00.219.2013]. 
+%CD acknowledge the DZHK (German Centre for Cardiovascular Research) Partner Site Heidelberg/Mannhein.
 
 \section*{Acknowledgments}
 TBD
@@ -260,7 +266,9 @@ The authors declare that they have no conflict of interest.
 
 \bibliographystyle{Frontiers-Harvard} %  Many Frontiers journals use the Harvard referencing system (Author-date), to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal. For Humanities and Social Sciences articles please include page numbers in the in-text citations 
 %\bibliographystyle{Frontiers-Vancouver} % Many Frontiers journals use the numbered referencing system, to find the style and resources for the journal you are submitting to: https://zendesk.frontiersin.org/hc/en-us/articles/360017860337-Frontiers-Reference-Styles-by-Journal
-\bibliography{main.bib, spatial_trx.bib}
+
+%\bibliography{main.bib, spatial_trx.bib, ../../../../../../Bartenschlager/analysis/seurat_pipeline/paper/template/single_cell.bib, ../../../../../../Bartenschlager/analysis/seurat_pipeline/paper/template/software.bib}
+\bibliography{main.bib,spatial_trx.bib,single_cell.bib,software.bib}
 
 
 %%% Make sure to upload the bib file along with the tex file and PDF

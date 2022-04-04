@@ -1,9 +1,0 @@
-RANK	DB	ID	ALT_ID	CONSENSUS	TP	TP%	FP	FP%	ENR_RATIO	SCORE_THR	PVALUE	LOG_PVALUE	EVALUE	LOG_EVALUE	QVALUE	LOG_QVALUE
-1	db/RNA/Ray2013_rbp_Mus_musculus.meme	RNCMPT00215	PCBP3	HUUUCCCU	174	69.05	679	51.48	1.34	3.9	4.86e-4	-7.63	1.94e-3	-6.24	1.68e-3	-6.39
-2	db/RNA/Ray2013_rbp_Mus_musculus.meme	RNCMPT00051	RBM38	GUGUGUG	82	32.54	283	21.46	1.52	6.6	8.86e-4	-7.03	3.54e-3	-5.64	1.68e-3	-6.39
-3	db/RNA/Ray2013_rbp_Mus_musculus.meme	RNCMPT00062	KHDRBS1	UAAAAGG	100	39.68	365	27.67	1.44	4.7	1.26e-3	-6.68	5.04e-3	-5.29	1.68e-3	-6.39
-4	db/RNA/Ray2013_rbp_Mus_musculus.meme	RNCMPT00239	PCBP1	CCUUUCCC	19	7.54	81	6.14	1.27	7.9	2.48e-1	-1.39	9.94e-1	-0.01	2.48e-1	-1.39
-
-# SEA (Simple Enrichment Analysis): Version 5.4.1 compiled on Aug 25 2021 at 17:37:48
-# The format of this file is described at https://meme-suite.org/meme/doc/sea-output-format.html.
-# sea --verbosity 1 --oc . --thresh 10.0 --align center --p IBZm.fasta --n IBZm.cmp_ref.fasta --m db/RNA/Ray2013_rbp_Mus_musculus.meme

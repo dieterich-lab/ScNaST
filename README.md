@@ -9,8 +9,8 @@ This repository contains *(i)* a pipeline for the annotation of genomes using lo
 
 This repository contains in addition supplementary material for
 
-> Etienne Boileau, etc., Christoph Dieterich.
-> ...
+> Etienne Boileau, Xue Li, Isabel Naarmann-de Vries, Christian Becker, Ramona Casper, Janine Altmüller, Florian Leuschner, Christoph Dieterich
+> Single-cell full-length spatial transcriptomics reveal the unexplored isoform diversity of the myocardium post-MI
 > Frontiers in Genetics (Genomic Assay Technology)
 > Advances in Single-Cell and Spatial Analyses Using Nanopore Sequencing
 

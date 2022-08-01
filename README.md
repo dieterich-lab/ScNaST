@@ -9,10 +9,10 @@ This repository contains *(i)* a pipeline for the annotation of genomes using lo
 
 This repository contains in addition supplementary material for
 
-> Etienne Boileau, Xue Li, Isabel Naarmann-de Vries, Christian Becker, Ramona Casper, Janine Altmüller, Florian Leuschner, Christoph Dieterich
-> Single-cell full-length spatial transcriptomics reveal the unexplored isoform diversity of the myocardium post-MI
-> Frontiers in Genetics (Genomic Assay Technology)
-> Advances in Single-Cell and Spatial Analyses Using Nanopore Sequencing
+> Boileau E, Li X, Naarmann-de Vries IS, Becker C, Casper R, Altmüller J, Leuschner F and Dieterich C (2022)
+> Full-Length Spatial Transcriptomics Reveals the Unexplored Isoform Diversity of the Myocardium Post-MI
+> Front. Genet. 13:912572. doi: [10.3389/fgene.2022.912572](https://www.frontiersin.org/articles/10.3389/fgene.2022.912572/full)
+> Research Topic: Advances in Single-Cell and Spatial Analyses Using Nanopore Sequencing
 
 
 ## How to use this repository
@@ -47,4 +47,10 @@ need to make sure it is referenced correctly when calling a script.
 
 ### paper
 
-Analysis and plotting scripts, additional results used in the manuscript. 
+Analysis and plotting scripts, additional results used in the manuscript. Analysis notebooks are under [visiumTools](workflow/visiumtools/).
+
+Additional data is available at
+
+> Boileau, Etienne, Li, Xue, Naarmann-de Vries, Isabel, Becker, Christian, Casper, Ramona, Altmüller, Janine, Leuschner, Florian, & Dieterich, Christoph. (2022). > Full-Length Spatial Transcriptomics Reveals the Unexplored Isoform Diversity of the Myocardium Post-MI [Data set]. 
+> Zenodo. [https://doi.org/10.5281/zenodo.6546361](https://doi.org/10.5281/zenodo.6546361)
+

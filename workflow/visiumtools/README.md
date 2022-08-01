@@ -2,7 +2,7 @@
 VisiumTools
 ===========
 
-This directory contains tools (scripts and notebooks) to prepare and/or analyze long-read data from the [scNaST Nanopore barcode/UMI assignment and transcript isoform quantification](https://github.com/dieterich-lab/ScNaST/workflow/sc-nanopore-utils/) workflow and obtained with the Visium Spatial Gene Expression molecular profiling protocol (10x Genomics).
+This directory contains tools (scripts and notebooks) to prepare and/or analyze long-read data from the [scNaST Nanopore barcode/UMI assignment and transcript isoform quantification](https://github.com/dieterich-lab/ScNaST/tree/main/workflow/sc-nanopore-utils) workflow and obtained with the Visium Spatial Gene Expression molecular profiling protocol (10x Genomics).
 
 These tools are typically used jointly with the **scNaST** assembly and transcript isoform quantification workflow and use the same configuration file, see `config.yaml` (parent directory).
 
@@ -44,8 +44,8 @@ as we intend to eventually integrate these with the [scNapbar](https://github.co
 
 | notebook          | description |
 | ------------------|-------------|
-
-
+| visium_illumina_bbknn.ipynb | Illumina (BBKNN workflow) |
+| visium_nanopore.ipynb | Nanopore (BBKNN workflow), using output from scNapBar/scNaST |
 
 
 

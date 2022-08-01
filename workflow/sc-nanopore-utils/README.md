@@ -15,7 +15,7 @@ Getting started
 
 - The input alignments in BAM format (output from [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore))
 - The assignment file `real.label` from [scNapbar](https://github.com/dieterich-lab/single-cell-nanopore)
-- The transcript sequences, transcriptome index, and GTF annotations (output from the [scNaST assembly workflow](https://github.com/dieterich-lab/ScNaST/workflow/assembly))
+- The transcript sequences, transcriptome index, and GTF annotations (output from the [scNaST assembly workflow](https://github.com/dieterich-lab/ScNaST/tree/main/workflow/assembly))
 
 ## Output
 
